@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.google.gson.JsonParser;
+import appdev.harish.medinfo.Globals;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -34,12 +35,12 @@ import java.util.List;
 
 public class LoginActivity extends ActionBarActivity {
 
-        private Button loginButton;
-        private TextView errorMessage;
-        private EditText usernameInput;
-        private EditText passwordInput;
-        // Creating JSON Parser object
-        JSONParser jParser = new JSONParser();
+    private Button loginButton;
+    private TextView errorMessage;
+    private EditText usernameInput;
+    private EditText passwordInput;
+    // Creating JSON Parser object
+    JSONParser jParser = new JSONParser();
     // url to get all products list
     private static String authenticate_url = "http://localhost:8070/MEdInfo/app_login.php";
     // products JSONArray
@@ -57,19 +58,19 @@ public class LoginActivity extends ActionBarActivity {
         loginButton.setOnClickListener(new Button.OnClickListener() {
                                            public void onClick(View v) {
 
-                                               String username = usernameInput.getText().toString();
-                                               String password = passwordInput.getText().toString();
+               String username = usernameInput.getText().toString();
+               String password = passwordInput.getText().toString();
 
-                                               errorMessage = (TextView) findViewById(R.id.errorMessage);
-                                               //errorMessage.setText("Login Clicked");
-                                               if ((username.trim().length() == 0) || (password.trim().length() == 0)) {
-                                                   errorMessage.setText("Fields cannot be empty");
-                                                   return;
-                                               } else {
-                                                    new AuthenticateUser(username, password).execute();
-                                                }
-                                            }
-                                        }
+               errorMessage = (TextView) findViewById(R.id.errorMessage);
+               //errorMessage.setText("Login Clicked");
+               if ((username.trim().length() == 0) || (password.trim().length() == 0)) {
+                   errorMessage.setText("Fields cannot be empty");
+                   return;
+               } else {
+                    new AuthenticateUser(username, password).execute();
+                }
+            }
+        }
         );
     }
 
@@ -98,13 +99,16 @@ public class LoginActivity extends ActionBarActivity {
             Log.d("Zero", params.toString());
             try {
                 Log.d("One", "Before calling ");
-                JSONObject response = jsonParser.makeHttpRequest(authenticate_url, "POST", params);
+                //JSONObject response = jsonParser.makeHttpRequest(authenticate_url, "POST", params);
+                Globals.response = jsonParser.makeHttpRequest(authenticate_url, "POST", params);
                 Log.d("Two", "After server request");
-                if (response.getString("success").equals("false"))
+                Log.d("All products: ", Globals.response.toString());
+
+                if (Globals.response.getString("success").equals("false"))
                     loginCheck = false;
-                else if(response.getString("success").equals("success")) {
+                else if(Globals.response.getString("success").equals("success")) {
                     loginCheck = true;
-                    Log.d("Create response", response.toString());
+                    Log.d("Create response", Globals.response.toString());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -125,6 +129,8 @@ public class LoginActivity extends ActionBarActivity {
             pDialog.dismiss();
             if(loginCheck) {
                 errorMessage.setText("valid User credentials");
+                Intent listPatients = new Intent(getApplicationContext(), ListPatientsActivity.class);
+                startActivity(listPatients);
             }
             else {
                 errorMessage.setText("Invalid User credentials");
