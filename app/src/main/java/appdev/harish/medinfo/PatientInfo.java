@@ -25,9 +25,10 @@ import java.util.List;
 
 public class PatientInfo extends ListActivity {
 
-    private String authenticate_urlurl;
+    private String authenticate_url;
     private ArrayList<HashMap<String, String>> patientInfo;
-    JSONArray products = null;
+    JSONArray patientInf = null;
+    JSONObject patientIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,41 +41,19 @@ public class PatientInfo extends ListActivity {
         Bundle extras = Intent.getIntent().getExtras();
         authenticate_url = extras.getString("url");
 
-        class AuthenticateUser extends AsyncTask<URL, Integer, Integer> {
+        class ListPatientInfo extends AsyncTask<URL, Integer, Integer> {
 
-            private String username;
-            private String password;
-            private TextView errorMessage = (TextView)findViewById(R.id.errorMessage);
-            private ProgressDialog pDialog;
-            private boolean loginCheck = false;
-            JSONObject loginParams = null;
             JSONParser jsonParser = new JSONParser();
 
-            AuthenticateUser(String username, String password) {
-                pDialog = new ProgressDialog(PatientInfo.this);
-                this.username = username;
-                this.password = password;
+            ListPatientInfo () {
+                //pDialog = new ProgressDialog(PatientInfo.this);
             }
 
             protected Integer doInBackground(URL... urls) {
-                //InputStream is = null;
                 List<NameValuePair> params = new ArrayList<NameValuePair>();
-                params.add(new BasicNameValuePair("username", username));
-                params.add(new BasicNameValuePair("password", password));
-                Log.d("Zero", params.toString());
+                params = null;
                 try {
-                    Log.d("One", "Before calling ");
-                    //JSONObject response = jsonParser.makeHttpRequest(authenticate_url, "POST", params);
-                    Globals.response = jsonParser.makeHttpRequest(authenticate_url, "POST", params);
-                    Log.d("Two", "After server request");
-                    Log.d("All products: ", Globals.response.toString());
-
-                    if (Globals.response.getString("success").equals("false"))
-                        loginCheck = false;
-                    else if(Globals.response.getString("success").equals("success")) {
-                        loginCheck = true;
-                        Log.d("Create response", Globals.response.toString());
-                    }
+                    patientIn = jsonParser.makeHttpRequest(authenticate_url, "GET", params);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -84,47 +63,16 @@ public class PatientInfo extends ListActivity {
 
             protected void onPreExecute() {
                 super.onPreExecute();
-                pDialog.setMessage("Logging in. Please wait...");
-                pDialog.setIndeterminate(false);
-                pDialog.setCancelable(false);
-                pDialog.show();
+                //pDialog.setMessage("Logging in. Please wait...");
+                //pDialog.setIndeterminate(false);
+                //pDialog.setCancelable(false);
+                //pDialog.show();
             }
 
             protected void onPostExecute(Integer result) {
-                pDialog.dismiss();
-                if(loginCheck) {
-                    errorMessage.setText("valid User credentials");
-                    Intent listPatients = new Intent(getApplicationContext(), ListPatientsActivity.class);
-                    startActivity(listPatients);
-                }
-                else {
-                    errorMessage.setText("Invalid User credentials");
-                    //Intent listPatients = new Intent(getApplicationContext(), ListPatientsActivity.class);
-                    //startActivity(listPatients);
-                }
+                //pDialog.dismiss();
             }
         }
     }
 
-/*@Override
-public boolean onCreateOptionsMenu(Menu menu) {
-    // Inflate the menu; this adds items to the action bar if it is present.
-    getMenuInflater().inflate(R.menu.menu_patient_info, menu);
-    return true;
-}*/
-
-//@Override
-/*public boolean onOptionsItemSelected(MenuItem item) {
-    // Handle action bar item clicks here. The action bar will
-    // automatically handle clicks on the Home/Up button, so long
-    // as you specify a parent activity in AndroidManifest.xml.
-    int id = item.getItemId();
-
-    //noinspection SimplifiableIfStatement
-    if (id == R.id.action_settings) {
-        return true;
-    }
-
-    return super.onOptionsItemSelected(item);
-}*/
 }

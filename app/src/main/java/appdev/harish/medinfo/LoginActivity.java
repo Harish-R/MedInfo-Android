@@ -134,8 +134,6 @@ public class LoginActivity extends ActionBarActivity {
             }
             else {
                 errorMessage.setText("Invalid User credentials");
-                //Intent listPatients = new Intent(getApplicationContext(), ListPatientsActivity.class);
-                //startActivity(listPatients);
             }
         }
     }
