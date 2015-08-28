@@ -64,15 +64,15 @@ public class ListPatientsActivity extends ListActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                // getting values from selected ListItem
-                String pid = ((TextView) view.findViewById(R.id.pat_id)).getText().toString();
+            // getting values from selected ListItem
+            String pid = ((TextView) view.findViewById(R.id.pat_id)).getText().toString();
 
-                // Starting new intent
-                Intent patientInfo = new Intent(getApplicationContext(), PatientInfo.class);
-                // sending pid to next activity
-                patientInfo.putExtra("url", "http://harishsblog.esy.es/MedInfo/patientlist.php?pid="+pid);
+            // Starting new intent
+            Intent patientInfo = new Intent(getApplicationContext(), PatientInfo.class);
+            // sending pid to next activity
+            patientInfo.putExtra("url", "http://medinfo.esy.es/patientlist.php?pid="+pid);
 
-                startActivity(patientInfo);
+            startActivity(patientInfo);
             }
         });
     }
@@ -81,6 +81,7 @@ public class ListPatientsActivity extends ListActivity {
     class LoadAllPatients extends AsyncTask<String, String, String> {
 
         public LoadAllPatients() {
+
             pDialog = new ProgressDialog(ListPatientsActivity.this);
         }
 

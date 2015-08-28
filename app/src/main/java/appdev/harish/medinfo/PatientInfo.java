@@ -27,8 +27,9 @@ public class PatientInfo extends ListActivity {
 
     private String authenticate_url;
     private ArrayList<HashMap<String, String>> patientInfo;
-    JSONArray patientInf = null;
-    JSONObject patientIn;
+    JSONArray patientArray;
+    JSONObject patientObject;
+    JSONObject patient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,22 +39,36 @@ public class PatientInfo extends ListActivity {
         patientInfo = new ArrayList<HashMap<String, String>>();
         ListView lv = getListView();
 
-        Bundle extras = Intent.getIntent().getExtras();
+        Bundle extras = new Bundle();
+        extras = getIntent().getExtras();
         authenticate_url = extras.getString("url");
 
         class ListPatientInfo extends AsyncTask<URL, Integer, Integer> {
 
+            ProgressDialog pDialog;
             JSONParser jsonParser = new JSONParser();
 
             ListPatientInfo () {
-                //pDialog = new ProgressDialog(PatientInfo.this);
+                pDialog = new ProgressDialog(PatientInfo.this);
             }
 
             protected Integer doInBackground(URL... urls) {
                 List<NameValuePair> params = new ArrayList<NameValuePair>();
                 params = null;
+
                 try {
-                    patientIn = jsonParser.makeHttpRequest(authenticate_url, "GET", params);
+                    patientObject = jsonParser.makeHttpRequest(authenticate_url, "GET", params);
+                    patientArray = patientObject.getJSONArray("patient");
+                    patient = patientArray.getJSONObject(0);
+
+                    // Storing each json item in variable
+                    String pat_id = patient.getString("pat_id");
+                    String name = patient.getString("name");
+                    String age = patient.getString("age");
+                    String sex = patient.getString("sex");
+                    String hospital = patient.getString("hospital");
+                    String phone = patient.getString("phone");
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -63,14 +78,14 @@ public class PatientInfo extends ListActivity {
 
             protected void onPreExecute() {
                 super.onPreExecute();
-                //pDialog.setMessage("Logging in. Please wait...");
-                //pDialog.setIndeterminate(false);
-                //pDialog.setCancelable(false);
-                //pDialog.show();
+                pDialog.setMessage("Logging in. Please wait...");
+                pDialog.setIndeterminate(false);
+                pDialog.setCancelable(false);
+                pDialog.show();
             }
 
             protected void onPostExecute(Integer result) {
-                //pDialog.dismiss();
+                pDialog.dismiss();
             }
         }
     }

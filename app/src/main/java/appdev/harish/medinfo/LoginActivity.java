@@ -42,7 +42,7 @@ public class LoginActivity extends ActionBarActivity {
     // Creating JSON Parser object
     JSONParser jParser = new JSONParser();
     // url to get all products list
-    private static String authenticate_url = "http://localhost:8070/MEdInfo/app_login.php";
+    private static String authenticate_url = "http://medinfo.esy.es/app_login.php";
     // products JSONArray
     //JSONArray products = null;
 
@@ -80,7 +80,7 @@ public class LoginActivity extends ActionBarActivity {
         private String password;
         private TextView errorMessage = (TextView)findViewById(R.id.errorMessage);
         private ProgressDialog pDialog;
-        private String authenticate_url = "http://harishsblog.esy.es/MedInfo/app_login.php";
+        private String authenticate_url = /*"http://localhost:8070/MedInfo/app_login.php";//*/"http://medinfo.esy.es/app_login.php";
         private boolean loginCheck = false;
         JSONObject loginParams = null;
         JSONParser jsonParser = new JSONParser();
@@ -89,6 +89,8 @@ public class LoginActivity extends ActionBarActivity {
             pDialog = new ProgressDialog(LoginActivity.this);
             this.username = username;
             this.password = password;
+            Log.d("uname", username);
+            Log.d("pass", password);
         }
 
         protected Integer doInBackground(URL... urls) {

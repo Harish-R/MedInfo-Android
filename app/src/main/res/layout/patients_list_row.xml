@@ -5,20 +5,21 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:id="@+id/patient_name" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
         android:textAppearance="?android:attr/textAppearanceListItem"
+        android:visibility="gone"
         android:id="@+id/pat_id" />
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:textAppearance="?android:attr/textAppearanceListItem"
         android:id="@+id/hospital_name" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:id="@+id/patient_name" />
 
 </LinearLayout>
